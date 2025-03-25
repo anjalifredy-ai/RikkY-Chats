@@ -36,7 +36,7 @@ Client based on [Telegram-X](https://github.com/TGX-Android/Telegram-X), [moeGra
 ## Build
 
 -  bocchiGramX can be built with **Android Studio** <a href="#"><img src="https://i.imgur.com/cPvvFDP.png" align="center" width="20" height="23"/></a> or from the command line with **Gradle**:
-1. `$ git clone --recursive --depth=1 --shallow-submodules https://github.com/bocchiGramX/bocchiGramX bocgx` — clone **moeGramX** with submodules
+1. `$ git clone --recursive --depth=1 --shallow-submodules https://github.com/bocchiGramX/bocchiGramX bocgx` — clone **bocchiGramX** with submodules
 2. In case you forgot the `--recursive` flag, `cd` into `bocgx` directory and: `$ git submodule init && git submodule update --init --recursive --depth=1`
 3. Create `keystore.properties` file outside of source tree with the following properties:<br/>`keystore.file`: absolute path to the keystore file<br/>`keystore.password`: password for the keystore<br/>`key.alias`: key alias that will be used to sign the app<br/>`key.password`: key password.<br/>**Warning**: keep this file safe and make sure nobody, except you, has access to it. For production builds one could use a separate user with home folder encryption to avoid harm from physical theft
 4. `$ cd bocgx`
