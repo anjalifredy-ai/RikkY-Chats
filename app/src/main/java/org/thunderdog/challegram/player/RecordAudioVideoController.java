@@ -354,7 +354,7 @@ public class RecordAudioVideoController implements
           return Views.isValid(this) && super.onTouchEvent(event);
         }
       };
-      this.switchCameraButton.setCameraIconRes(!Settings.instance().startRoundWithRear());
+      this.switchCameraButton.setCameraIconRes(1 == MoexConfig.instance().getRememberedCameraInVideoNote());
       /*this.switchCameraButton.setSpinCallback(new CameraControlButton.SpinCallback() {
         @Override
         public void onSpin (CameraControlButton v, float rotate, float scaleFactor) {
@@ -371,15 +371,18 @@ public class RecordAudioVideoController implements
         this.isFront = MoexConfig.instance().getRememberedCameraInVideoNote();
       else
         this.isFront = MoexConfig.CIRCLE_FRONT;
+      // TODO: Fix icon on switch camera button
       this.switchCameraButtonWrap.setOnClickListener(v -> {
         if (ownedCamera != null) {
           if (MoexConfig.instance().getRememberInVideoNote()){
             if (isFront == MoexConfig.CIRCLE_FRONT){
               isFront = MoexConfig.CIRCLE_BACK;
+              this.switchCameraButton.setCameraIconRes(true);
               MoexConfig.instance().setRememberedCameraInVideoNote(MoexConfig.CIRCLE_BACK);
             }
             else{
               isFront = MoexConfig.CIRCLE_FRONT;
+              this.switchCameraButton.setCameraIconRes(false);
               MoexConfig.instance().setRememberedCameraInVideoNote(MoexConfig.CIRCLE_FRONT);
             }
           }
@@ -804,7 +807,7 @@ public class RecordAudioVideoController implements
   private void resetViews () {
     lastDuration = 0;
     setTranslations(0f, 0f);
-    switchCameraButton.setCameraIconRes(!Settings.instance().startRoundWithRear());
+    switchCameraButton.setCameraIconRes(1 == MoexConfig.instance().getRememberedCameraInVideoNote());
     progressView.reset();
     durationView.reset();
     lockView.setCollapseFactor(0f);
