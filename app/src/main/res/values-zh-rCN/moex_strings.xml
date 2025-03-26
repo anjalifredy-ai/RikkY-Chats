@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="MoexSettings">moeGramX 选项</string>
+  <string name="MoexSettings">bocchiGramX 选项</string>
   <string name="GeneralMoexSettings">通用</string>
   <string name="InterfaceMoexSettings">界面</string>
   <string name="ChatsMoexSettings">聊天</string>
@@ -27,7 +27,7 @@
   <string name="DisableSendAsButton">频道</string>
   <string name="MobileHidden">号码已隐藏</string>
   <string name="MoexAbout">关于</string>
-  <string name="MoexAboutText" formatted="true">**moeGramX** — 是一款基于官方源代码和 TDlib 的可爱且功能丰富的实验性客户端。欢迎您提出功能建议，报告问题，或在我们的讨论组聊天！</string>
+  <string name="MoexAboutText" formatted="true">**bocchiGramX** — 是一款基于官方源代码和 TDlib 的可爱且功能丰富的实验性客户端。欢迎您提出功能建议，报告问题，或在我们的讨论组聊天！</string>
   <string name="HideCameraButtonInfo">隐藏相机按钮选项也将相机按钮添加到附件菜单底部.</string>
   <string name="IncreaseRecents">增加更多的最近贴纸</string>
   <string name="hideMessagesBadge">隐藏未读消息数</string>
@@ -51,4 +51,5 @@
   <string name="ProfileOptions">个人资料</string>
   <string name="ActivityOptions">活动</string>
   <string name="HideBottomBar">隐藏底边栏</string>
+  <string name="bocchi_translation">这会将您重定向至 moeGramX 翻译</string>
 </resources>

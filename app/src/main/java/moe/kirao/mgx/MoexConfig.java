@@ -49,6 +49,10 @@ public class MoexConfig {
   public static final String KEY_HIDE_BOTTOM_BAR = "hide_bottom_bar";
   public static final String KEY_DARKEN_DRAWER = "darken_drawer";
 
+  public static final String KEY_CIRCLE_CAMERA = "circle_camera";
+  public static final String KEY_REMEMBER_CAMERA_IN_VIDEO_NOTE = "remember_videonote";
+  public static final String KEY_REMEMBERED_CAMERA = "remembered_videonote";
+
   public static final int SIZE_LIMIT_800 = 0;
   public static final int SIZE_LIMIT_1280 = 1;
   public static final int SIZE_LIMIT_2560 = 2;
@@ -56,6 +60,13 @@ public class MoexConfig {
   public static final int HEADER_TEXT_MOEX = 1;
   public static final int HEADER_TEXT_USERNAME = 2;
   public static final int HEADER_TEXT_NAME = 3;
+
+  public static final int CIRCLE_FRONT = 1;
+  public static final int CIRCLE_BACK = 2;
+  public static final int CIRCLE_SUGGEST = 3;
+
+  public static boolean rememberCameraInVideoNote = instance().getBoolean(KEY_REMEMBER_CAMERA_IN_VIDEO_NOTE, false);
+
 
   public static boolean disableCameraButton = instance().getBoolean(KEY_DISABLE_CAMERA_BUTTON, false);
   public static boolean disableRecordButton = instance().getBoolean(KEY_DISABLE_RECORD_BUTTON, false);
@@ -75,6 +86,9 @@ public class MoexConfig {
   public static boolean disableReactions = instance().getBoolean(KEY_DISABLE_REACTIONS, false);
   public static boolean hideBottomBar = instance().getBoolean(KEY_HIDE_BOTTOM_BAR, false);
   public static boolean darkenDrawer = instance().getBoolean(KEY_DARKEN_DRAWER, false);
+
+
+
 
   private MoexConfig () {
     File configDir = new File(UI.getAppContext().getFilesDir(), "moexconf");
@@ -274,6 +288,38 @@ public class MoexConfig {
     }
   }
 
+  public int getCircleCamera(){
+    return getInt(KEY_CIRCLE_CAMERA, CIRCLE_FRONT);
+  }
+
+  public void setCircleCamera(int circle){
+    if (circle == CIRCLE_FRONT){
+      remove(KEY_CIRCLE_CAMERA);
+    }
+    else{
+      putInt(KEY_CIRCLE_CAMERA, circle);
+    }
+  }
+
+  public boolean getRememberInVideoNote(){
+    return getBoolean(KEY_REMEMBER_CAMERA_IN_VIDEO_NOTE, false);
+  }
+  public void toggleRememberInVideoNote(){
+    putBoolean(KEY_REMEMBER_CAMERA_IN_VIDEO_NOTE, rememberCameraInVideoNote ^= true);
+  }
+
+  public int getRememberedCameraInVideoNote(){
+    return getInt(KEY_REMEMBERED_CAMERA, CIRCLE_FRONT);
+  }
+
+  public void setRememberedCameraInVideoNote(int camera){
+    if (camera == CIRCLE_FRONT){
+      remove(KEY_REMEMBERED_CAMERA);
+    }
+    else{
+     putInt(KEY_REMEMBERED_CAMERA, camera);
+    }
+  }
   public void toggleRememberSendOptions () {
     putBoolean(KEY_REMEMBER_SEND_OPTIONS, rememberOptions ^= true);
   }
@@ -285,6 +331,8 @@ public class MoexConfig {
   public Boolean getAuthorState () {
     return getBoolean(KEY_REMEMBER_SEND_OPTIONS_AUTHOR, false);
   }
+
+
 
   public void SendWithoutCaption (boolean state) {
     putBoolean(KEY_REMEMBER_SEND_OPTIONS_CAPTIONS, state);
@@ -340,4 +388,6 @@ public class MoexConfig {
   public void toggleDarkenDrawer () {
     putBoolean(KEY_DARKEN_DRAWER, darkenDrawer ^= true);
   }
+
+
 }

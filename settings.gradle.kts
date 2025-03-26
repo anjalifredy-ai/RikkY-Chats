@@ -15,7 +15,7 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "moeGramX"
+rootProject.name = "bocchiGramX"
 include(
   ":tdlib",
 

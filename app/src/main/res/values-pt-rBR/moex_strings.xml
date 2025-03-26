@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="MoexSettings">Opções do moeGramX</string>
+  <string name="MoexSettings">Opções do bocchiGramX</string>
   <string name="GeneralMoexSettings">Geral</string>
   <string name="InterfaceMoexSettings">Interface</string>
   <string name="ChatsMoexSettings">Conversas</string>
@@ -27,7 +27,7 @@
   <string name="DisableSendAsButton">Canais</string>
   <string name="MobileHidden">Número oculto</string>
   <string name="MoexAbout">Sobre</string>
-  <string name="MoexAboutText" formatted="true">**moeGramX** — é um recurso bonito rico em um pouco experimental com base nas fontes oficiais e TDlib. Sinta-se à vontade para sugerir alguns recursos, relatar problemas ou apenas conversar no nosso grupo de discussões!</string>
+  <string name="MoexAboutText" formatted="true">**bocchiGramX** — é um recurso bonito rico em um pouco experimental com base nas fontes oficiais e TDlib. Sinta-se à vontade para sugerir alguns recursos, relatar problemas ou apenas conversar no nosso grupo de discussões!</string>
   <string name="HideCameraButtonInfo">Ocultar a opção do botão da câmera também adiciona um botão da câmera ao menu de anexo</string>
   <string name="IncreaseRecents">Aumentar stickers recentes</string>
   <string name="hideMessagesBadge">Ocultar emblema de mensagens não lidas</string>
@@ -67,4 +67,5 @@
   <string name="StoryId">Quantidade</string>
   <string name="Edited">Editado</string>
   <string name="MoexDarkenDrawer">Avatar escurecido</string>
+  <string name="bocchi_translation">Isso irá redirecioná-lo para as traduções do moeGramX</string>
 </resources>

@@ -1,10 +1,10 @@
 <div align="center">
 
-Client based on [Telegram-X](https://github.com/TGX-Android/Telegram-X), [moeGramX](https://github.com/moeCrafters/moeGramX) and [TDLib](https://core.telegram.org/tdlib) ~
+Client based on [Telegram-X](https://github.com/TGX-Android/Telegram-X), [bocchiGramX](https://github.com/moeCrafters/bocchiGramX) and [TDLib](https://core.telegram.org/tdlib) ~
 </div>
 
 ## Features
--All from [moeGramX](https://github.com/moeCrafters/moeGramX)
+-All from [bocchiGramX](https://github.com/moeCrafters/bocchiGramX)
 ## Installation
 
 ### Prerequisites

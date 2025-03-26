@@ -70,6 +70,7 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
       c.setArguments(new SettingsMoexController.Args(SettingsMoexController.CATEGORY_CHATS));
       navigateTo(c);
     } else if (viewId == R.id.btn_moexCrowdinLink) {
+      UI.showToast("This will redirect you to moeGramX translations", Toast.LENGTH_SHORT);
       tdlib.ui().openUrl(this, Lang.getString(R.string.MoexCrowdinLink), new TdlibUi.UrlOpenParameters());
     } else if (viewId == R.id.btn_moexChatLink) {
       tdlib.ui().openUrl(this, Lang.getString(R.string.MoexChatLink), new TdlibUi.UrlOpenParameters().forceInstantView());
@@ -127,6 +128,12 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
     } else if (viewId == R.id.btn_darkenDrawer) {
       MoexConfig.instance().toggleDarkenDrawer();
       adapter.updateValuedSettingById(viewId);
+    } else if (viewId == R.id.btn_changeCircleVideo) {
+      showCircleCamera();
+    }
+    else if (viewId == R.id.btn_rememberCameraInVideoNote){
+      MoexConfig.instance().toggleRememberInVideoNote();
+      adapter.updateValuedSettingById(viewId);
     }
   }
 
@@ -158,6 +165,30 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
       MoexConfig.instance().setSizeLimit(sizeOption);
       adapter.updateValuedSettingById(R.id.btn_changeSizeLimit);
     }));
+  }
+
+  private void showCircleCamera(){
+    int circle = MoexConfig.instance().getCircleCamera();
+    showSettings(new SettingsWrapBuilder(R.id.btn_changeCircleVideo).setRawItems(new ListItem[]{
+      new ListItem(ListItem.TYPE_RADIO_OPTION, R.id.btn_circleFront, 0, R.string.bocchi_circleFront, R.id.btn_changeCircleVideo, circle == MoexConfig.CIRCLE_FRONT),
+      new ListItem(ListItem.TYPE_RADIO_OPTION, R.id.btn_circleBack, 0, R.string.bocchi_circleBack, R.id.btn_changeCircleVideo, circle == MoexConfig.CIRCLE_BACK),
+      new ListItem(ListItem.TYPE_RADIO_OPTION, R.id.btn_circleSuggest, 0, R.string.bocchi_circleSuggest, R.id.btn_changeCircleVideo, circle == MoexConfig.CIRCLE_SUGGEST),
+
+    }).addHeaderItem(Lang.getMarkdownString(this, R.string.bocchi_circleDescription)).setIntDelegate((id, result) -> {
+      int circleResult = result.get(R.id.btn_changeCircleVideo);
+      int sizeOption;
+      if (circleResult == R.id.btn_circleFront) {
+        sizeOption = MoexConfig.CIRCLE_FRONT;
+      } else if (circleResult == R.id.btn_circleBack) {
+        sizeOption = MoexConfig.CIRCLE_BACK;
+      } else {
+        sizeOption = MoexConfig.CIRCLE_SUGGEST;
+      }
+
+      MoexConfig.instance().setCircleCamera(sizeOption);
+      adapter.updateValuedSettingById(R.id.btn_changeSizeLimit);
+    }));
+
   }
 
   private void showHideMessagePanelOptions () {
@@ -312,6 +343,18 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
           view.getToggler().setRadioEnabled(MoexConfig.typingInsteadChoosing, isUpdate);
         } else if (itemId == R.id.btn_darkenDrawer) {
           view.getToggler().setRadioEnabled(MoexConfig.darkenDrawer, isUpdate);
+        } else if (itemId == R.id.btn_circleBack) {
+          int circle = MoexConfig.instance().getCircleCamera();
+          switch (circle){
+            case MoexConfig.CIRCLE_FRONT:
+              view.setData(R.string.bocchi_circleFront);
+            case MoexConfig.CIRCLE_BACK:
+              view.setData(R.string.bocchi_circleBack);
+            case MoexConfig.CIRCLE_SUGGEST:
+              view.setData(R.string.bocchi_circleSuggest);
+          }
+        } else if (itemId == R.id.btn_rememberCameraInVideoNote) {
+          view.getToggler().setRadioEnabled(MoexConfig.rememberCameraInVideoNote, isUpdate);
         }
       }
     };
@@ -383,6 +426,10 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
         items.add(new ListItem(ListItem.TYPE_DESCRIPTION, 0, 0, Lang.getMarkdownString(this, R.string.RememberOptionsInfo), false));
         items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
         items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_typingInstead, 0, R.string.TypingInstead));
+        items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
+        items.add(new ListItem(ListItem.TYPE_VALUED_SETTING_COMPACT, R.id.btn_changeCircleVideo, 0, R.string.bocchi_circleDescription));
+        items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
+        items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_rememberCameraInVideoNote, 0, "Remember camera in video notes"));
         items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
         items.add(new ListItem(ListItem.TYPE_DESCRIPTION, 0, 0, Lang.getMarkdownString(this, R.string.TypingInsteadInfo), false));
         break;

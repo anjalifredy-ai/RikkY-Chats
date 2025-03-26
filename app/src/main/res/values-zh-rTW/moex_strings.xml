@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="MoexSettings">moeGramX 選項</string>
+  <string name="MoexSettings">bocchiGramX 選項</string>
   <string name="GeneralMoexSettings">一般設定</string>
   <string name="InterfaceMoexSettings">介面</string>
   <string name="ChatsMoexSettings">聊天</string>

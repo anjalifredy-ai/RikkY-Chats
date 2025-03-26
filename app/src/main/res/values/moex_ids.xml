@@ -24,6 +24,10 @@
   <item name="btn_changeSizeLimit" type="id" />
   <item name="btn_sizeLimit800" type="id" />
   <item name="btn_sizeLimit1280" type="id" />
+  <item name="btn_changeCircleVideo" type="id" />
+  <item name="btn_circleFront" type="id"/>
+  <item name="btn_circleBack" type="id"/>
+  <item name="btn_circleSuggest" type="id"/>
   <item name="btn_sizeLimit2560" type="id" />
   <item name="btn_copyPhoto" type="id" />
   <item name="btn_saveSticker" type="id" />
@@ -62,4 +66,5 @@
   <item name="btn_storyId" type="id" />
   <item name="btn_darkenDrawer" type="id" />
   <item name="btn_saveDocument" type="id" />
+  <item name="btn_rememberCameraInVideoNote" type="id" />
 </resources>

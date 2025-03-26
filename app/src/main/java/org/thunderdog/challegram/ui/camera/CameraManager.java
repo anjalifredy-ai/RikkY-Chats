@@ -43,6 +43,7 @@ public abstract class CameraManager <T extends View> {
   protected final Context context;
   protected final CameraDelegate delegate;
   protected final T cameraView;
+  public boolean isCameraFront;
 
   public CameraManager (Context context, CameraDelegate delegate) {
     this.context = context;

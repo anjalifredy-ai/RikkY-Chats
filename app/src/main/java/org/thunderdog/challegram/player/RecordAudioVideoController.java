@@ -36,6 +36,7 @@ import org.thunderdog.challegram.Log;
 import org.thunderdog.challegram.N;
 import org.thunderdog.challegram.R;
 import org.thunderdog.challegram.U;
+import org.thunderdog.challegram.charts.MiniChart;
 import org.thunderdog.challegram.component.chat.VoiceVideoButtonView;
 import org.thunderdog.challegram.core.Background;
 import org.thunderdog.challegram.core.Lang;
@@ -85,8 +86,10 @@ import me.vkryl.core.FileUtils;
 import me.vkryl.core.MathUtils;
 import me.vkryl.core.StringUtils;
 import me.vkryl.core.reference.ReferenceUtils;
+import moe.kirao.mgx.MoexConfig;
 import tgx.td.ChatId;
 import tgx.td.Td;
+
 
 public class RecordAudioVideoController implements
   Settings.VideoModePreferenceListener, FactorAnimator.Target,
@@ -128,6 +131,7 @@ public class RecordAudioVideoController implements
   private ImageView muteIcon;
 
   private boolean preferVideoMode;
+  private int isFront;
 
   public RecordAudioVideoController (BaseActivity context) {
     this.context = context;
@@ -363,8 +367,22 @@ public class RecordAudioVideoController implements
       this.switchCameraButton.setIsSmall();
       this.switchCameraButtonWrap = new RecordControllerButton(context);
       this.switchCameraButtonWrap.init(null);
+      if (MoexConfig.instance().getRememberInVideoNote())
+        this.isFront = MoexConfig.instance().getRememberedCameraInVideoNote();
+      else
+        this.isFront = MoexConfig.CIRCLE_FRONT;
       this.switchCameraButtonWrap.setOnClickListener(v -> {
         if (ownedCamera != null) {
+          if (MoexConfig.instance().getRememberInVideoNote()){
+            if (isFront == MoexConfig.CIRCLE_FRONT){
+              isFront = MoexConfig.CIRCLE_BACK;
+              MoexConfig.instance().setRememberedCameraInVideoNote(MoexConfig.CIRCLE_BACK);
+            }
+            else{
+              isFront = MoexConfig.CIRCLE_FRONT;
+              MoexConfig.instance().setRememberedCameraInVideoNote(MoexConfig.CIRCLE_FRONT);
+            }
+          }
           ownedCamera.switchCamera();
         }
       });
@@ -1575,7 +1593,21 @@ public class RecordAudioVideoController implements
   // Video record impl
 
   private void setupCamera (boolean isOwned) {
-    ownedCamera.getManager().setPreferFrontFacingCamera(!Settings.instance().startRoundWithRear() && isOwned);
+    int circle = MoexConfig.instance().getCircleCamera();
+    if (circle == MoexConfig.CIRCLE_FRONT)
+      ownedCamera.getManager().setPreferFrontFacingCamera(isOwned);
+    if (circle == MoexConfig.CIRCLE_BACK)
+      ownedCamera.getManager().setPreferFrontFacingCamera(!isOwned);
+    if (circle == MoexConfig.CIRCLE_SUGGEST) {}
+    if(MoexConfig.instance().getRememberInVideoNote()){
+      if (MoexConfig.instance().getRememberedCameraInVideoNote() == MoexConfig.CIRCLE_FRONT){
+        ownedCamera.getManager().setPreferFrontFacingCamera(true);
+      }
+      else{
+        ownedCamera.getManager().setPreferFrontFacingCamera(false);
+      }
+    }
+    //ownedCamera.getManager().setPreferFrontFacingCamera(MoexConfig.instance().getCircleCamera() && isOwned);
     ownedCamera.getManager().setMaxResolution(isOwned ? (Settings.instance().needHqRoundVideos() ? MAX_HQ_ROUND_RESOLUTION : MAX_ROUND_RESOLUTION) : 0);
     ownedCamera.getLegacyManager().setNoPreviewBlur(false);
     ownedCamera.getLegacyManager().setUseRoundRender(isOwned);
