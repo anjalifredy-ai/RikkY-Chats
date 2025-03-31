@@ -3528,47 +3528,70 @@ public class MessagesController extends ViewController<MessagesController.Argume
       header.addMoreButton(menu, this);
     } else if (id == R.id.menu_messageActions) {
       int iconColorId = getSelectHeaderIconColorId();
-      HeaderButton selectInBetweenBtn = header.addButton(menu, R.id.menu_btn_selectInBetween, R.drawable.baseline_toc_24, iconColorId, this, Screen.dp(49f));
-      selectInBetweenBtn.setThemeColorId(getSelectHeaderIconColorId());
-      selectInBetweenBtn.setTag(Lang.getString(R.string.SelectMessagesInBetween));
-      selectInBetweenBtn.setVisibility(View.GONE);
+      if (!MoexConfig.instance().getHidedInMoreByKey("selectInBetween"))
+      {
+          HeaderButton selectInBetweenBtn = header.addButton(menu, R.id.menu_btn_selectInBetween, R.drawable.baseline_toc_24, iconColorId, this, Screen.dp(49f));
+          selectInBetweenBtn.setThemeColorId(getSelectHeaderIconColorId());
+          selectInBetweenBtn.setTag(Lang.getString(R.string.SelectMessagesInBetween));
+          selectInBetweenBtn.setVisibility(View.GONE);
+      }
       int totalButtonsCount = 0;
       boolean value;
-      header.addButton(menu, R.id.menu_btn_send, R.drawable.baseline_send_24, iconColorId, this, Screen.dp(52f))
-        .setVisibility((value = canSendSelectedMessages()) ? View.VISIBLE : View.GONE);
-      if (value) totalButtonsCount++;
-      header.addViewButton(menu, this, iconColorId)
-        .setVisibility((value = canViewSelectedMessages()) ? View.VISIBLE : View.GONE);
-      if (value) totalButtonsCount++;
-      header.addReplyButton(menu, this, iconColorId)
-        .setVisibility((value = canReplyToSelectedMessages()) ? View.VISIBLE : View.GONE);
-      if (value) totalButtonsCount++;
-      header.addEditButton(menu, this, iconColorId)
-        .setVisibility((value = canEditSelectedMessages()) ? View.VISIBLE : View.GONE);
-      if (value) totalButtonsCount++;
-      header.addButton(menu, R.id.menu_btn_clearCache, R.drawable.templarian_baseline_broom_24, iconColorId, this, Screen.dp(52f))
-        .setVisibility((value = canClearCacheSelectedMessages()) ? View.VISIBLE : View.GONE);
-      if (value) totalButtonsCount++;
-      header.addButton(menu, R.id.menu_btn_unpinAll, R.drawable.deproko_baseline_pin_undo_24, iconColorId, this, Screen.dp(52f))
-        .setVisibility((value = canUnpinSelectedMessages()) ? View.VISIBLE : View.GONE);
-      if (value) totalButtonsCount++;
-      header.addRetryButton(menu, this, iconColorId)
-        .setVisibility((value = canResendSelectedMessages()) ? View.VISIBLE : View.GONE);
-      if (value) totalButtonsCount++;
-      header.addDeleteButton(menu, this, iconColorId)
-        .setVisibility((value = canDeleteSelectedMessages()) ? View.VISIBLE : View.GONE);
-      if (value) totalButtonsCount++;
+      if (!MoexConfig.instance().getHidedInMoreByKey("send")) {
+        header.addButton(menu, R.id.menu_btn_send, R.drawable.baseline_send_24, iconColorId, this, Screen.dp(52f))
+          .setVisibility((value = canSendSelectedMessages()) ? View.VISIBLE : View.GONE);
+        if (value) totalButtonsCount++;
+      }
+      if (!MoexConfig.instance().getHidedInMoreByKey("view")) {
+        header.addViewButton(menu, this, iconColorId)
+          .setVisibility((value = canViewSelectedMessages()) ? View.VISIBLE : View.GONE);
+        if (value) totalButtonsCount++;
+      }
+      if (!MoexConfig.instance().getHidedInMoreByKey("reply")) {
+        header.addReplyButton(menu, this, iconColorId)
+          .setVisibility((value = canReplyToSelectedMessages()) ? View.VISIBLE : View.GONE);
+        if (value) totalButtonsCount++;
+      }
+      if (!MoexConfig.instance().getHidedInMoreByKey("edit")) {
+        header.addEditButton(menu, this, iconColorId)
+          .setVisibility((value = canEditSelectedMessages()) ? View.VISIBLE : View.GONE);
+        if (value) totalButtonsCount++;
+      }
+      if (!MoexConfig.instance().getHidedInMoreByKey("clearCache")) {
+        header.addButton(menu, R.id.menu_btn_clearCache, R.drawable.templarian_baseline_broom_24, iconColorId, this, Screen.dp(52f))
+          .setVisibility((value = canClearCacheSelectedMessages()) ? View.VISIBLE : View.GONE);
+        if (value) totalButtonsCount++;
+      }
+      if (!MoexConfig.instance().getHidedInMoreByKey("unpinAll")) {
+        header.addButton(menu, R.id.menu_btn_unpinAll, R.drawable.deproko_baseline_pin_undo_24, iconColorId, this, Screen.dp(52f))
+          .setVisibility((value = canUnpinSelectedMessages()) ? View.VISIBLE : View.GONE);
+        if (value) totalButtonsCount++;
+      }
+      if (!MoexConfig.instance().getHidedInMoreByKey("retry")) {
+        header.addRetryButton(menu, this, iconColorId)
+          .setVisibility((value = canResendSelectedMessages()) ? View.VISIBLE : View.GONE);
+        if (value) totalButtonsCount++;
+      }
+      if (!MoexConfig.instance().getHidedInMoreByKey("delete")) {
+        header.addDeleteButton(menu, this, iconColorId)
+          .setVisibility((value = canDeleteSelectedMessages()) ? View.VISIBLE : View.GONE);
+        if (value) totalButtonsCount++;
+      }
+      if (!MoexConfig.instance().getHidedInMoreByKey("report")) {
+        HeaderButton reportButton = header.addButton(menu, R.id.menu_btn_report, R.drawable.baseline_report_24, iconColorId, this, Screen.dp(52f));
+        reportButton.setVisibility(canReportSelectedMessages(totalButtonsCount) ? View.VISIBLE : View.GONE);
+      }
+      if (!MoexConfig.instance().getHidedInMoreByKey("copy")) {
+        header.addCopyButton(menu, this, iconColorId)
+          .setVisibility((value = canCopySelectedMessages()) ? View.VISIBLE : View.GONE);
+        if (value) totalButtonsCount++;
+      }
+      if (!MoexConfig.instance().getHidedInMoreByKey("forward")) {
+        header.addForwardButton(menu, this, iconColorId)
+          .setVisibility((value = canShareSelectedMessages()) ? View.VISIBLE : View.GONE);
+        if (value) totalButtonsCount++;
+      }
 
-      HeaderButton reportButton = header.addButton(menu, R.id.menu_btn_report, R.drawable.baseline_report_24, iconColorId, this, Screen.dp(52f));
-
-      header.addCopyButton(menu, this, iconColorId)
-        .setVisibility((value = canCopySelectedMessages()) ? View.VISIBLE : View.GONE);
-      if (value) totalButtonsCount++;
-      header.addForwardButton(menu, this, iconColorId)
-        .setVisibility((value = canShareSelectedMessages()) ? View.VISIBLE : View.GONE);
-      if (value) totalButtonsCount++;
-
-      reportButton.setVisibility(canReportSelectedMessages(totalButtonsCount) ? View.VISIBLE : View.GONE);
     }
   }
 

@@ -36,7 +36,6 @@ import org.thunderdog.challegram.Log;
 import org.thunderdog.challegram.N;
 import org.thunderdog.challegram.R;
 import org.thunderdog.challegram.U;
-import org.thunderdog.challegram.charts.MiniChart;
 import org.thunderdog.challegram.component.chat.VoiceVideoButtonView;
 import org.thunderdog.challegram.core.Background;
 import org.thunderdog.challegram.core.Lang;
@@ -67,16 +66,19 @@ import org.thunderdog.challegram.unsorted.Settings;
 import org.thunderdog.challegram.util.HapticMenuHelper;
 import org.thunderdog.challegram.widget.CircleFrameLayout;
 import org.thunderdog.challegram.widget.NoScrollTextView;
+import org.thunderdog.challegram.widget.PopupLayout;
 import org.thunderdog.challegram.widget.SendButton;
 import org.thunderdog.challegram.widget.ShadowView;
 import org.thunderdog.challegram.widget.SimpleVideoPlayer;
 import org.thunderdog.challegram.widget.VideoTimelineView;
+
 
 import java.io.File;
 import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import me.vkryl.android.AnimatorUtils;
 import me.vkryl.android.animator.BoolAnimator;
@@ -245,6 +247,7 @@ public class RecordAudioVideoController implements
 
   public View prepareViews () {
     if (rootLayout == null) {
+
       this.rootLayout = new FrameLayoutFix(context) {
         @Override
         public boolean onInterceptTouchEvent (MotionEvent ev) {
@@ -772,8 +775,10 @@ public class RecordAudioVideoController implements
   private float releaseFactor;
 
   private void setReleased (boolean isReleased, boolean animated) {
+
     if (this.isReleased != isReleased) {
       this.isReleased = isReleased;
+      //android.util.Log.d("RELEASE CAMERA", "setReleased: " + this.isReleased);
       releaseAnimator.setValue(isReleased, animated);
     }
   }
@@ -821,7 +826,12 @@ public class RecordAudioVideoController implements
     videoPreviewView.setPlaying(true);
     sendButton.destroySlowModeCounterController();
     audioPreviewView.clearData();
-    setReleased(false, false);
+    if(MoexConfig.instance().getCircleCamera() == MoexConfig.CIRCLE_SUGGEST){
+      setReleased(false, false);
+    }
+    else {
+      setReleased(true, false);
+    }
     resetState();
   }
 
@@ -1595,13 +1605,29 @@ public class RecordAudioVideoController implements
 
   // Video record impl
 
+  private void setupCamera(boolean isOwned, int suggested){
+    if(suggested == MoexConfig.CIRCLE_FRONT){
+      ownedCamera.getManager().setPreferFrontFacingCamera(true);
+    }
+    else{
+      ownedCamera.getManager().setPreferFrontFacingCamera(false);
+    }
+    ownedCamera.getManager().setMaxResolution(isOwned ? (Settings.instance().needHqRoundVideos() ? MAX_HQ_ROUND_RESOLUTION : MAX_ROUND_RESOLUTION) : 0);
+    ownedCamera.getLegacyManager().setNoPreviewBlur(false);
+    ownedCamera.getLegacyManager().setUseRoundRender(isOwned);
+    ownedCamera.getLegacyManager().getView().setIgnoreAspectRatio(isOwned);
+    ownedCamera.getCameraLayout().setDisallowRatioChanges(isOwned);
+    ownedCamera.setUseFastInitialization(isOwned);
+    }
+
+
+
   private void setupCamera (boolean isOwned) {
     int circle = MoexConfig.instance().getCircleCamera();
     if (circle == MoexConfig.CIRCLE_FRONT)
       ownedCamera.getManager().setPreferFrontFacingCamera(isOwned);
     if (circle == MoexConfig.CIRCLE_BACK)
       ownedCamera.getManager().setPreferFrontFacingCamera(!isOwned);
-    if (circle == MoexConfig.CIRCLE_SUGGEST) {}
     if(MoexConfig.instance().getRememberInVideoNote()){
       if (MoexConfig.instance().getRememberedCameraInVideoNote() == MoexConfig.CIRCLE_FRONT){
         ownedCamera.getManager().setPreferFrontFacingCamera(true);
@@ -1624,6 +1650,7 @@ public class RecordAudioVideoController implements
   private String roundOutputPath;
   private TdApi.File roundFile;
 
+
   private void prepareVideoRecording () {
     if (!StringUtils.isEmpty(roundKey)) {
       throw new IllegalStateException();
@@ -1640,11 +1667,50 @@ public class RecordAudioVideoController implements
       }
     });
 
-    setupCamera(true);
-    ownedCamera.setInEarlyInitialization();
-    ownedCamera.setOutputController(context.navigation().getCurrentStackItem());
-    ownedCamera.onPrepareToShow();
-    ownedCamera.takeCameraLayout(videoLayout, 1);
+    if (MoexConfig.instance().getCircleCamera() == MoexConfig.CIRCLE_SUGGEST){
+      //resumeRecordingImpl(RECORD_MODE_VIDEO);
+      inRaiseMode = true;
+      ownedCamera.getManager().pauseCamera();
+
+      int[] ids = new int[]{R.id.btn_front_videonote, R.id.btn_back_videonote};
+      String[] strings = new String[]{"Front", "Back"};
+
+      AtomicInteger camera = new AtomicInteger(MoexConfig.CIRCLE_FRONT);
+
+      PopupLayout popupLayout = targetController.showOptions(ids, strings, (optionItemView, id) -> {
+          int viewId = optionItemView.getId();
+          if (viewId == R.id.btn_front_videonote) {
+            camera.set(MoexConfig.CIRCLE_FRONT);
+          }
+          else{
+            camera.set(MoexConfig.CIRCLE_BACK);
+          }
+            if (ownedCamera != null) {
+
+              setupCamera(true, camera.get());
+              ownedCamera.setInEarlyInitialization();
+              ownedCamera.setOutputController(context.navigation().getCurrentStackItem());
+              ownedCamera.onPrepareToShow();
+              ownedCamera.takeCameraLayout(videoLayout, 1);
+
+              ownedCamera.getManager().resumeCamera();
+            }
+          return true;
+        }
+
+      );
+
+    }
+    else{
+      setupCamera(true);
+      ownedCamera.setInEarlyInitialization();
+      ownedCamera.setOutputController(context.navigation().getCurrentStackItem());
+      ownedCamera.onPrepareToShow();
+      ownedCamera.takeCameraLayout(videoLayout, 1);
+      ownedCamera.getManager().resumeCamera();
+    }
+
+
   }
 
   private void setRoundGeneration (long generationId, String outputPath) {

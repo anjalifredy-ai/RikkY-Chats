@@ -12,6 +12,8 @@ import org.thunderdog.challegram.tool.UI;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import me.vkryl.core.reference.ReferenceList;
@@ -53,6 +55,8 @@ public class MoexConfig {
   public static final String KEY_REMEMBER_CAMERA_IN_VIDEO_NOTE = "remember_videonote";
   public static final String KEY_REMEMBERED_CAMERA = "remembered_videonote";
 
+  public static final String KEY_HIDE_IN_MORE = "hide_in_more";
+  public static final String KEY_HIDE_IN_DRAWER = "hide_in_drawer";
   public static final int SIZE_LIMIT_800 = 0;
   public static final int SIZE_LIMIT_1280 = 1;
   public static final int SIZE_LIMIT_2560 = 2;
@@ -86,6 +90,9 @@ public class MoexConfig {
   public static boolean disableReactions = instance().getBoolean(KEY_DISABLE_REACTIONS, false);
   public static boolean hideBottomBar = instance().getBoolean(KEY_HIDE_BOTTOM_BAR, false);
   public static boolean darkenDrawer = instance().getBoolean(KEY_DARKEN_DRAWER, false);
+
+  public static Set<String> hideInMore = instance().getStringSet(KEY_HIDE_IN_MORE);
+  public static Set<String> hideInDrawer = instance().getStringSet(KEY_HIDE_IN_DRAWER);
 
 
 
@@ -191,6 +198,9 @@ public class MoexConfig {
   public String getString (String key, String defValue) {
     return config.getString(key, defValue);
   }
+
+  public void setStringSet(String key, @NonNull Set<String> value) { config.putStringSet(key, value); }
+  public Set<String> getStringSet(String key) { return config.getStringSet(key, null) != null ? config.getStringSet(key, null) : Set.of(); }
 
   public boolean containsKey (String key) {
     return config.contains(key);
@@ -300,6 +310,65 @@ public class MoexConfig {
       putInt(KEY_CIRCLE_CAMERA, circle);
     }
   }
+
+  public Set<String> getHidedInMore(){
+    return getStringSet(KEY_HIDE_IN_MORE);
+  }
+  public boolean getHidedInMoreByKey (String val){
+    return getHidedInMore().contains(val);
+  }
+  public void setHidedInMore(Set<String> val){
+    if (val.isEmpty()){
+      remove(KEY_HIDE_IN_MORE);
+    }
+    else{
+      setStringSet(KEY_HIDE_IN_MORE, val);
+    }
+  }
+
+  public void addHidedInMore (String val){
+    Set<String> s = new HashSet<>(getHidedInMore());
+    s.add(val);
+    setHidedInMore(s);
+  }
+
+  public void removeHidedInMore (String val){
+    Set<String> s = new HashSet<>(getHidedInMore());
+    s.remove(val);
+    setHidedInMore(s);
+  }
+
+
+  public Set<String> getHidedInDrawer(){
+    return getStringSet(KEY_HIDE_IN_DRAWER);
+  }
+
+  public boolean getHidedInDrawerByKey(String val){
+    return getHidedInDrawer().contains(val);
+  }
+
+  public void setHidedInDrawer(Set<String> val){
+    if(val.isEmpty()){
+      remove(KEY_HIDE_IN_DRAWER);
+    }
+    else{
+      setStringSet(KEY_HIDE_IN_DRAWER, val);
+    }
+  }
+
+  public void addHidedInDrawer(String val){
+    Set<String> s = new HashSet<>(getHidedInDrawer());
+    s.add(val);
+    setHidedInDrawer(s);
+  }
+
+  public void removeHidedInDrawer(String val){
+    Set<String> s = new HashSet<>(getHidedInDrawer());
+    s.remove(val);
+    setHidedInDrawer(s);
+  }
+
+
 
   public boolean getRememberInVideoNote(){
     return getBoolean(KEY_REMEMBER_CAMERA_IN_VIDEO_NOTE, false);

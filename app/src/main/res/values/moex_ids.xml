@@ -67,4 +67,34 @@
   <item name="btn_darkenDrawer" type="id" />
   <item name="btn_saveDocument" type="id" />
   <item name="btn_rememberCameraInVideoNote" type="id" />
+  <!-- List of hided buttons in message select header-->
+  <item name="btn_hide_menu" type="id" />
+  <item name="btn_hide_menu_btn_selectInBetween" type="id" />
+  <item name="btn_hide_menu_btn_send" type="id" />
+  <item name="btn_hide_menu_btn_view" type="id" />
+  <item name="btn_hide_menu_btn_reply" type="id" />
+  <item name="btn_hide_menu_btn_edit" type="id" />
+  <item name="btn_hide_menu_btn_clearCache" type="id" />
+  <item name="btn_hide_menu_btn_unpinAll" type="id" />
+  <item name="btn_hide_menu_btn_retry" type="id" />
+  <item name="btn_hide_menu_btn_delete" type="id" />
+  <item name="btn_hide_menu_btn_report" type="id" />
+  <item name="btn_hide_menu_btn_copy" type="id" />
+  <item name="btn_hide_menu_btn_forward" type="id" />
+
+  <!-- List if hided buttons in drawer -->
+  <item name="btn_hide_drawer" type="id" />
+  <item name="btn_hide_drawer_reactions" type="id" />
+  <item name="btn_hide_drawer_reply" type="id" />
+  <item name="btn_hide_drawer_share" type="id" />
+  <item name="btn_hide_drawer_pin" type="id" />
+  <item name="btn_hide_drawer_edit" type="id" />
+  <item name="btn_hide_drawer_copy" type="id" />
+  <item name="btn_hide_drawer_delete" type="id" />
+  <item name="btn_hide_drawer_more" type="id" />
+  <item name="btn_hide_drawer_translate" type="id" />
+
+
+  <item name="btn_front_videonote" type="id" />
+  <item name="btn_back_videonote" type="id" />
 </resources>

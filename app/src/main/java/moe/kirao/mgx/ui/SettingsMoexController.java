@@ -1,5 +1,7 @@
 package moe.kirao.mgx.ui;
 
+
+
 import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
@@ -18,6 +20,7 @@ import org.thunderdog.challegram.ui.SettingsAdapter;
 import org.thunderdog.challegram.v.CustomRecyclerView;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import moe.kirao.mgx.MoexConfig;
 
@@ -135,6 +138,14 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
       MoexConfig.instance().toggleRememberInVideoNote();
       adapter.updateValuedSettingById(viewId);
     }
+    else if (viewId == R.id.btn_hide_menu){
+      showHideMenu();
+      adapter.updateValuedSettingById(viewId);
+    }
+    else if (viewId == R.id.btn_hide_drawer){
+      showHideInDrawer();
+      adapter.updateValuedSettingById(viewId);
+    }
   }
 
   @Override
@@ -167,23 +178,107 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
     }));
   }
 
+
+  private void showHideMenu(){
+
+    Set<String> val = MoexConfig.instance().getHidedInMore();
+    showSettings(new SettingsWrapBuilder(R.id.btn_hide_menu).setRawItems(new ListItem[]{
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_menu_btn_copy, 0, "Copy", R.id.btn_hide_menu_btn_copy, val.contains("copy")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_menu_btn_delete, 0, "Delete", R.id.btn_hide_menu_btn_delete, val.contains("delete")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_menu_btn_edit, 0, "Edit", R.id.btn_hide_menu_btn_edit, val.contains("edit")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_menu_btn_clearCache, 0, "Clear cache", R.id.btn_hide_menu_btn_clearCache, val.contains("clearCache")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_menu_btn_forward, 0, "Forward", R.id.btn_hide_menu_btn_forward, val.contains("forward")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_menu_btn_report, 0, "Report", R.id.btn_hide_menu_btn_report, val.contains("report")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_menu_btn_retry, 0, "Retry", R.id.btn_hide_menu_btn_retry, val.contains("retry")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_menu_btn_reply, 0, "Reply", R.id.btn_hide_menu_btn_reply, val.contains("reply")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_menu_btn_selectInBetween, 0, "Select in between", R.id.btn_hide_menu_btn_selectInBetween, val.contains("selectInBetween")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_menu_btn_send, 0, "Send",R.id.btn_hide_menu_btn_send, val.contains("send")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_menu_btn_view, 0, "View", R.id.btn_hide_menu_btn_view, val.contains("view")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_menu_btn_unpinAll, 0, "Unpin all", R.id.btn_hide_menu_btn_unpinAll, val.contains("unpinAll")),
+    }).addHeaderItem(Lang.getMarkdownString(this, R.string.HidedOptions)).setIntDelegate((id, result) -> {
+      //int ch = result.get(R.id.btn_hide_menu);
+
+      if (result.get(R.id.btn_hide_menu_btn_copy) == R.id.btn_hide_menu_btn_copy)
+        MoexConfig.instance().addHidedInMore("copy");
+      else
+        MoexConfig.instance().removeHidedInMore("copy");
+
+      if (result.get(R.id.btn_hide_menu_btn_delete) == R.id.btn_hide_menu_btn_delete)
+        MoexConfig.instance().addHidedInMore("delete");
+      else
+        MoexConfig.instance().removeHidedInMore("delete");
+
+      if (result.get(R.id.btn_hide_menu_btn_edit) == R.id.btn_hide_menu_btn_edit)
+        MoexConfig.instance().addHidedInMore("edit");
+      else
+        MoexConfig.instance().removeHidedInMore("edit");
+
+      if (result.get(R.id.btn_hide_menu_btn_clearCache) == R.id.btn_hide_menu_btn_clearCache)
+        MoexConfig.instance().addHidedInMore("clearCache");
+      else
+        MoexConfig.instance().removeHidedInMore("clearCache");
+
+      if (result.get(R.id.btn_hide_menu_btn_forward) == R.id.btn_hide_menu_btn_forward)
+        MoexConfig.instance().addHidedInMore("forward");
+      else
+        MoexConfig.instance().removeHidedInMore("forward");
+
+      if (result.get(R.id.btn_hide_menu_btn_report) == R.id.btn_hide_menu_btn_report)
+        MoexConfig.instance().addHidedInMore("report");
+      else
+        MoexConfig.instance().removeHidedInMore("report");
+
+      if (result.get(R.id.btn_hide_menu_btn_selectInBetween) == R.id.btn_hide_menu_btn_selectInBetween)
+        MoexConfig.instance().addHidedInMore("selectInBetween");
+      else
+        MoexConfig.instance().removeHidedInMore("selectInBetween");
+
+      if (result.get(R.id.btn_hide_menu_btn_retry) == R.id.btn_hide_menu_btn_retry)
+        MoexConfig.instance().addHidedInMore("retry");
+      else
+        MoexConfig.instance().removeHidedInMore("retry");
+
+      if (result.get(R.id.btn_hide_menu_btn_send) == R.id.btn_hide_menu_btn_send)
+        MoexConfig.instance().addHidedInMore("send");
+      else
+        MoexConfig.instance().removeHidedInMore("send");
+
+      if (result.get(R.id.btn_hide_menu_btn_view) == R.id.btn_hide_menu_btn_view)
+        MoexConfig.instance().addHidedInMore("view");
+      else
+        MoexConfig.instance().removeHidedInMore("view");
+
+      if (result.get(R.id.btn_hide_menu_btn_unpinAll) == R.id.btn_hide_menu_btn_unpinAll)
+        MoexConfig.instance().addHidedInMore("unpinAll");
+      else
+        MoexConfig.instance().removeHidedInMore("unpinAll");
+
+      if (result.get(R.id.btn_hide_menu_btn_reply) == R.id.btn_hide_menu_btn_reply)
+        MoexConfig.instance().addHidedInMore("reply");
+      else
+        MoexConfig.instance().removeHidedInMore("reply");
+
+      adapter.updateValuedSettingById(R.id.btn_hide_menu);
+    }));
+  }
   private void showCircleCamera(){
     int circle = MoexConfig.instance().getCircleCamera();
     showSettings(new SettingsWrapBuilder(R.id.btn_changeCircleVideo).setRawItems(new ListItem[]{
       new ListItem(ListItem.TYPE_RADIO_OPTION, R.id.btn_circleFront, 0, R.string.bocchi_circleFront, R.id.btn_changeCircleVideo, circle == MoexConfig.CIRCLE_FRONT),
       new ListItem(ListItem.TYPE_RADIO_OPTION, R.id.btn_circleBack, 0, R.string.bocchi_circleBack, R.id.btn_changeCircleVideo, circle == MoexConfig.CIRCLE_BACK),
       new ListItem(ListItem.TYPE_RADIO_OPTION, R.id.btn_circleSuggest, 0, R.string.bocchi_circleSuggest, R.id.btn_changeCircleVideo, circle == MoexConfig.CIRCLE_SUGGEST),
-
+      //new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_rememberCameraInVideoNote, 0, R.string.remember, R.id.btn_changeCircleVideo, true)
     }).addHeaderItem(Lang.getMarkdownString(this, R.string.bocchi_circleDescription)).setIntDelegate((id, result) -> {
       int circleResult = result.get(R.id.btn_changeCircleVideo);
-      int sizeOption;
+      int sizeOption = MoexConfig.instance().getCircleCamera();
       if (circleResult == R.id.btn_circleFront) {
         sizeOption = MoexConfig.CIRCLE_FRONT;
       } else if (circleResult == R.id.btn_circleBack) {
         sizeOption = MoexConfig.CIRCLE_BACK;
-      } else {
+      } else if (circleResult == R.id.btn_circleSuggest){
         sizeOption = MoexConfig.CIRCLE_SUGGEST;
       }
+
 
       MoexConfig.instance().setCircleCamera(sizeOption);
       adapter.updateValuedSettingById(R.id.btn_changeSizeLimit);
@@ -240,6 +335,67 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
       MoexConfig.instance().setHeaderText(defaultOption);
       adapter.updateValuedSettingById(R.id.btn_headerText);
     }));
+  }
+
+  private void showHideInDrawer(){
+    MoexConfig config = MoexConfig.instance();
+    showSettings(new SettingsWrapBuilder(R.id.btn_hide_drawer).setRawItems(new ListItem[]{
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_drawer_reactions, 0, "Reactions", R.id.btn_hide_drawer_reactions, config.getHidedInDrawerByKey("reactions")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_drawer_reply, 0, "Reply", R.id.btn_hide_drawer_reply, config.getHidedInDrawerByKey("reply")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_drawer_share, 0, "Share", R.id.btn_hide_drawer_share, config.getHidedInDrawerByKey("share")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_drawer_pin, 0, "Pin", R.id.btn_hide_drawer_pin, config.getHidedInDrawerByKey("pin")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_drawer_edit, 0, "Edit", R.id.btn_hide_drawer_edit, config.getHidedInDrawerByKey("edit")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_drawer_copy, 0, "Copy", R.id.btn_hide_drawer_copy, config.getHidedInDrawerByKey("copy")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_drawer_delete, 0, "Delete", R.id.btn_hide_drawer_delete, config.getHidedInDrawerByKey("delete")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_drawer_more, 0, "More", R.id.btn_hide_drawer_more, config.getHidedInDrawerByKey("more")),
+      new ListItem(ListItem.TYPE_CHECKBOX_OPTION, R.id.btn_hide_drawer_translate, 0, "Translate", R.id.btn_hide_drawer_translate, config.getHidedInDrawerByKey("translate")),
+    }).addHeaderItem(Lang.getMarkdownString(this, R.string.HidedInDrawer)).setIntDelegate((id, result) -> {
+      if (result.get(R.id.btn_hide_drawer_copy) == R.id.btn_hide_drawer_copy)
+        config.addHidedInDrawer("copy");
+      else
+        config.removeHidedInDrawer("copy");
+
+      if (result.get(R.id.btn_hide_drawer_delete) == R.id.btn_hide_drawer_delete)
+        config.addHidedInDrawer("delete");
+      else
+        config.removeHidedInDrawer("delete");
+
+      if (result.get(R.id.btn_hide_drawer_edit) == R.id.btn_hide_drawer_edit)
+        config.addHidedInDrawer("edit");
+      else
+        config.removeHidedInDrawer("edit");
+
+      if (result.get(R.id.btn_hide_drawer_reactions) == R.id.btn_hide_drawer_reactions)
+        config.addHidedInDrawer("reactions");
+      else
+        config.removeHidedInDrawer("reactions");
+
+      if (result.get(R.id.btn_hide_drawer_reply) == R.id.btn_hide_drawer_reply)
+        config.addHidedInDrawer("reply");
+      else
+        config.removeHidedInDrawer("reply");
+
+      if (result.get(R.id.btn_hide_drawer_share) == R.id.btn_hide_drawer_share)
+        config.addHidedInDrawer("share");
+      else
+        config.removeHidedInDrawer("share");
+
+      if (result.get(R.id.btn_hide_drawer_pin) == R.id.btn_hide_drawer_pin)
+        config.addHidedInDrawer("pin");
+      else
+        config.removeHidedInDrawer("pin");
+
+      if (result.get(R.id.btn_hide_drawer_more) == R.id.btn_hide_drawer_more)
+        config.addHidedInDrawer("more");
+      else
+        config.removeHidedInDrawer("more");
+
+      if (result.get(R.id.btn_hide_drawer_translate) == R.id.btn_hide_drawer_translate)
+        config.addHidedInDrawer("translate");
+      else
+        config.removeHidedInDrawer("translate");
+    }));
+
   }
 
   @Override
@@ -427,6 +583,10 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
         items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
         items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_typingInstead, 0, R.string.TypingInstead));
         items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
+        items.add(new ListItem(ListItem.TYPE_VALUED_SETTING_COMPACT, R.id.btn_hide_menu, 0, "Header options deleter"));
+        items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
+        //items.add(new ListItem(ListItem.TYPE_VALUED_SETTING_COMPACT, R.id.btn_hide_drawer, 0, "Drawer options deleter"));
+        //items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
         items.add(new ListItem(ListItem.TYPE_VALUED_SETTING_COMPACT, R.id.btn_changeCircleVideo, 0, R.string.bocchi_circleDescription));
         items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
         items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_rememberCameraInVideoNote, 0, "Remember camera in video notes"));

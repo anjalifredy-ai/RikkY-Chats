@@ -5594,5 +5594,6 @@
   <string name="bocchi_circleSuggest">Suggest</string>
   <string name="bocchi_circleDescription">Camera on circle videos</string>
   <string name="not_yet_implemented">Not yet implemented</string>
+  <string name="remember">Remember</string>
 
 </resources>
