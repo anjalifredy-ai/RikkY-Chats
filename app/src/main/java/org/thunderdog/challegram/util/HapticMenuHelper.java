@@ -269,7 +269,7 @@ public class HapticMenuHelper implements View.OnTouchListener, View.OnLongClickL
     return hapticMenu != null && !hapticMenu.isWindowHidden();
   }
 
-  private void openMenu (View view, List<MenuItem> items, int anchorMode) {
+  public void openMenu (View view, List<MenuItem> items, int anchorMode) {
     if (hapticMenu != null) {
       hapticMenu.hideWindow(false);
       if (onHapticMenuListener != null) {

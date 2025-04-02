@@ -22,6 +22,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -83,6 +84,7 @@ public class SendButton extends View implements FactorAnimator.Target, TooltipOv
     }
   }
 
+
   @Override
   public void getTargetBounds (View targetView, Rect outRect) {
     outRect.top += Screen.dp(8f);
@@ -95,8 +97,12 @@ public class SendButton extends View implements FactorAnimator.Target, TooltipOv
 
   @Override
   public boolean onTouchEvent (MotionEvent event) {
+    Log.d("voiceVideo", "onTouchEvent: pressed");
     return Views.onTouchEvent(this, event) && super.onTouchEvent(event);
   }
+
+
+
 
   private boolean inlineProgress;
 

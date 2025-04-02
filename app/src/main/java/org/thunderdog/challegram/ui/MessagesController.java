@@ -1208,6 +1208,7 @@ public class MessagesController extends ViewController<MessagesController.Argume
     lp.rightMargin = Screen.dp(2f);
 
     recordButton = new VoiceVideoButtonView(context);
+
     recordButton.setPadding(0, 0, Screen.dp(2f), 0);
     recordButton.setHasTouchControls(true);
     addThemeInvalidateListener(recordButton);

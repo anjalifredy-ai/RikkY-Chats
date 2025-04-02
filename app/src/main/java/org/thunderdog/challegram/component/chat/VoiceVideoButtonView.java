@@ -19,6 +19,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -39,11 +40,14 @@ import me.vkryl.android.animator.BoolAnimator;
 import me.vkryl.android.animator.FactorAnimator;
 import me.vkryl.core.lambda.CancellableRunnable;
 import me.vkryl.core.lambda.Destroyable;
+import moe.kirao.mgx.MoexConfig;
 
 public class VoiceVideoButtonView extends View implements FactorAnimator.Target, Settings.VideoModePreferenceListener, Destroyable, TooltipOverlayView.LocationProvider {
   private boolean hasTouchControls;
 
   private final Drawable sendIcon, micIcon, videoIcon, searchIcon;
+
+
 
   public VoiceVideoButtonView (Context context) {
     super(context);
@@ -52,6 +56,9 @@ public class VoiceVideoButtonView extends View implements FactorAnimator.Target,
     videoIcon = Drawables.get(getResources(), R.drawable.deproko_baseline_msg_video_24);
     searchIcon = Drawables.get(getResources(), R.drawable.baseline_search_24);
     setInVideoMode(Settings.instance().preferVideoMode(), false);
+
+
+
   }
 
   @Override
@@ -59,6 +66,7 @@ public class VoiceVideoButtonView extends View implements FactorAnimator.Target,
     outRect.top += Screen.dp(8f);
     outRect.bottom -= Screen.dp(8f);
   }
+
 
   public void setHasTouchControls (boolean hasTouchControls) {
     if (this.hasTouchControls != hasTouchControls) {
@@ -186,7 +194,9 @@ public class VoiceVideoButtonView extends View implements FactorAnimator.Target,
 
   private boolean isDown;
 
-  private void setIsDown (boolean isDown) {
+  public void setIsDown (boolean isDown) {
+
+
     if (this.isDown != isDown) {
       this.isDown = isDown;
       if (isDown) {
@@ -194,6 +204,7 @@ public class VoiceVideoButtonView extends View implements FactorAnimator.Target,
       } else {
         cancelLongTap();
       }
+      //Log.d("voiceVideo", "setIsDown: " + this.isDown);
     }
   }
 
@@ -220,7 +231,9 @@ public class VoiceVideoButtonView extends View implements FactorAnimator.Target,
     }
   }
 
-  private void setInLongTap (boolean inLongTap, boolean byCancel) {
+  public void setInLongTap (boolean inLongTap, boolean byCancel) {
+
+
     if (this.inLongTap != inLongTap) {
       boolean success;
       if (inLongTap) {
@@ -236,11 +249,16 @@ public class VoiceVideoButtonView extends View implements FactorAnimator.Target,
       } else if (inLongTap) {
         setIsDown(false);
       }
+
     }
+    Log.d("voiceVideo", "setInLongTap: " + this.inLongTap + byCancel);
   }
 
   private void performTap () {
+
+
     ViewUtils.onClick(this);
+
     Settings.instance().setPreferVideoMode(!inVideoMode.getValue());
   }
 

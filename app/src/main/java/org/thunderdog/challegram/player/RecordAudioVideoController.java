@@ -76,6 +76,7 @@ import org.thunderdog.challegram.widget.VideoTimelineView;
 import java.io.File;
 import java.lang.ref.Reference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -421,6 +422,7 @@ public class RecordAudioVideoController implements
           updatePositions();
         }
       };
+
       this.voiceVideoButtonView.setLayoutParams(FrameLayoutFix.newParams(Screen.dp(50f), Screen.dp(49f), Gravity.RIGHT | Gravity.BOTTOM));
       ViewSupport.setHigherElevation(voiceVideoButtonView, recordBackground, true);
       rootLayout.addView(voiceVideoButtonView);
@@ -826,12 +828,8 @@ public class RecordAudioVideoController implements
     videoPreviewView.setPlaying(true);
     sendButton.destroySlowModeCounterController();
     audioPreviewView.clearData();
-    if(MoexConfig.instance().getCircleCamera() == MoexConfig.CIRCLE_SUGGEST){
-      setReleased(false, false);
-    }
-    else {
-      setReleased(true, false);
-    }
+
+
     resetState();
   }
 
@@ -1669,24 +1667,31 @@ public class RecordAudioVideoController implements
 
     if (MoexConfig.instance().getCircleCamera() == MoexConfig.CIRCLE_SUGGEST){
       //resumeRecordingImpl(RECORD_MODE_VIDEO);
-      inRaiseMode = true;
+
       ownedCamera.getManager().pauseCamera();
 
-      int[] ids = new int[]{R.id.btn_front_videonote, R.id.btn_back_videonote};
-      String[] strings = new String[]{"Front", "Back"};
+
 
       AtomicInteger camera = new AtomicInteger(MoexConfig.CIRCLE_FRONT);
-
-      PopupLayout popupLayout = targetController.showOptions(ids, strings, (optionItemView, id) -> {
-          int viewId = optionItemView.getId();
-          if (viewId == R.id.btn_front_videonote) {
-            camera.set(MoexConfig.CIRCLE_FRONT);
-          }
-          else{
-            camera.set(MoexConfig.CIRCLE_BACK);
-          }
-            if (ownedCamera != null) {
-
+      HapticMenuHelper.Provider provider = new HapticMenuHelper.Provider() {
+        @Override
+        public List<HapticMenuHelper.MenuItem> onCreateHapticMenu (View view) {
+          ArrayList<HapticMenuHelper.MenuItem> items = new ArrayList<HapticMenuHelper.MenuItem>();
+          items.add(new HapticMenuHelper.MenuItem(R.id.btn_front_videonote, "Front", R.drawable.baseline_camera_front_24));
+          items.add(new HapticMenuHelper.MenuItem(R.id.btn_back_videonote, "Back", R.drawable.baseline_camera_rear_24));
+          return items;
+        }
+      };
+      HapticMenuHelper haptic = new HapticMenuHelper(provider, ((item, view, parentView) -> {
+        if (ownedCamera != null){
+          int id = item.getId();
+          if (id == R.id.btn_front_videonote || id == R.id.btn_back_videonote){
+            if (id == R.id.btn_front_videonote){
+              camera.set(MoexConfig.CIRCLE_FRONT);
+            }
+            else if (id == R.id.btn_back_videonote){
+              camera.set(MoexConfig.CIRCLE_BACK);
+            }
               setupCamera(true, camera.get());
               ownedCamera.setInEarlyInitialization();
               ownedCamera.setOutputController(context.navigation().getCurrentStackItem());
@@ -1694,11 +1699,37 @@ public class RecordAudioVideoController implements
               ownedCamera.takeCameraLayout(videoLayout, 1);
 
               ownedCamera.getManager().resumeCamera();
-            }
-          return true;
+              return true;
+          }
+          else {
+            return false;
+          }
+        }
+        else{
+          return false;
         }
 
-      );
+      }), null, null).selectableMode(sendButton);
+
+
+
+      boolean x = haptic.openMenu(sendButton);
+      if(!x){
+        haptic.hideMenu();
+      }
+
+      /*PopupLayout popupLayout = targetController.showOptions(ids, strings, (optionItemView, id) -> {
+          int viewId = optionItemView.getId();
+          if (viewId == R.id.btn_front_videonote) {
+            camera.set(MoexConfig.CIRCLE_FRONT);
+          }
+          else{
+            camera.set(MoexConfig.CIRCLE_BACK);
+          }
+
+        }
+
+      );*/
 
     }
     else{
@@ -1727,6 +1758,7 @@ public class RecordAudioVideoController implements
 
   private boolean isRoundVideoFileReady () {
     return !StringUtils.isEmpty(roundKey) && !StringUtils.isEmpty(roundOutputPath) && roundFile != null;
+
   }
 
   private void destroyVideoRecording (boolean deleteFile) {
