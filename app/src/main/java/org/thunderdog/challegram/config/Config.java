@@ -169,7 +169,7 @@ public class Config {
   public static final boolean ROUND_VIDEOS_RECORD_SUPPORTED = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
 
   public static final boolean DEBUG_CLIPPING = false;
-  public static final boolean USE_CRASHLYTICS = false;
+  public static final boolean USE_CRASHLYTICS = true;
 
   public static final boolean CALL_FROM_PREVIEW = false;
 

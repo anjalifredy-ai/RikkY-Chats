@@ -9,6 +9,7 @@ plugins {
   id("com.android.application")
   id("module-plugin")
   id("cmake-plugin")
+  id("com.google.firebase.crashlytics") version "3.0.5"
 }
 
 val generateResourcesAndThemes by tasks.registering(GenerateResourcesAndThemesTask::class) {
@@ -449,7 +450,10 @@ dependencies {
   implementation("com.googlecode.mp4parser:isoparser:1.0.6")
   
   // Gson: https://github.com/google/gson/blob/main/CHANGELOG.md
-  implementation("com.google.code.gson:gson:2.10.1")
+  implementation("com.google.code.gson:gson:2.10.1") // 2.11.0+ requires minSdkVersion 21
+
+  // Crashlytics: https://firebase.google.com/products/crashlytics
+  implementation("com.google.firebase:firebase-crashlytics:19.4.4") // 20.0.0+ requires minSdkVersion 21
 }
 
 if (!isExperimentalBuild) {

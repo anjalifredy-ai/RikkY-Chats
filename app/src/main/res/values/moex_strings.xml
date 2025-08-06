@@ -83,4 +83,6 @@
   <string name="Edited">Edited</string>
   <string name="MoexDarkenDrawer">Darken avatar</string>
   <string name="SilentMessage">Send silent messsages</string>
+  <string name="AllowCrashlytics">Report crash data</string>
+  <string name="CrashlyticsNote">Anonymized error data will be collected and sent to Crashlytics, which can help fix rare errors and improve stability.\nWhen disabled, error data will not be sent, and all existing data will be cleared</string>
 </resources>

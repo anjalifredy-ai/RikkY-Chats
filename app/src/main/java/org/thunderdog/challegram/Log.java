@@ -22,6 +22,7 @@ import android.os.Message;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.otaliastudios.transcoder.internal.utils.Logger;
 
 import org.drinkless.tdlib.TdApi;
@@ -48,9 +49,10 @@ import me.vkryl.core.StringUtils;
 import me.vkryl.core.lambda.RunnableData;
 import me.vkryl.core.reference.ReferenceList;
 import me.vkryl.core.util.Blob;
+import moe.kirao.mgx.MoexConfig;
 
 public class Log {
-  public static final String LOG_TAG = "tgx";
+  public static final String LOG_TAG = "mgx";
 
   public static boolean needMeasureLaunchSpeed () {
     return Log.checkLogLevel(Log.LEVEL_VERBOSE);
@@ -784,7 +786,11 @@ public class Log {
 
   public static void initLibraries (Context activity) {
     if (Config.USE_CRASHLYTICS) {
-      // io.fabric.sdk.android.Fabric.with(this, new com.crashlytics.android.Crashlytics());
+      FirebaseCrashlytics firebaseCrashlytics = FirebaseCrashlytics.getInstance();
+      firebaseCrashlytics.setCrashlyticsCollectionEnabled(MoexConfig.enableCrashlytics);
+      if (firebaseCrashlytics.checkForUnsentReports().getResult()) {
+        firebaseCrashlytics.deleteUnsentReports();
+      }
     }
   }
 

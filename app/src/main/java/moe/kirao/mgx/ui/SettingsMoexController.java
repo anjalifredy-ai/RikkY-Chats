@@ -138,6 +138,9 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
     } else if (viewId == R.id.btn_silent) {
       MoexConfig.instance().toggleSilentMessage();
       adapter.updateValuedSettingById(viewId);
+    } else if (viewId == R.id.btn_crashlytics) {
+      MoexConfig.instance().toggleCrashlytics();
+      adapter.updateValuedSettingById(viewId);
     }
   }
 
@@ -327,6 +330,8 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
           view.getToggler().setRadioEnabled(MoexConfig.darkenDrawer, isUpdate);
         } else if (itemId == R.id.btn_silent) {
           view.getToggler().setRadioEnabled(MoexConfig.silentMessage, isUpdate);
+        } else if (itemId == R.id.btn_crashlytics) {
+          view.getToggler().setRadioEnabled(MoexConfig.enableCrashlytics, isUpdate);
         }
       }
     };
@@ -396,12 +401,15 @@ public class SettingsMoexController extends RecyclerViewController<SettingsMoexC
       case CATEGORY_MISC:
         items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.ExperimentalOptions));
         items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
+        items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_enableFeaturesButton, 0, R.string.EnableFeatures));
+        items.add(new ListItem(ListItem.TYPE_SEPARATOR_FULL));
         items.add(new ListItem(ListItem.TYPE_VALUED_SETTING_COMPACT, R.id.btn_changeSizeLimit, 0, R.string.changeSizeLimit));
         items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
         items.add(new ListItem(ListItem.TYPE_DESCRIPTION, 0, 0, Lang.getMarkdownString(this, R.string.changeSizeLimitInfo), false));
         items.add(new ListItem(ListItem.TYPE_SHADOW_TOP));
-        items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_enableFeaturesButton, 0, R.string.EnableFeatures));
+        items.add(new ListItem(ListItem.TYPE_RADIO_SETTING, R.id.btn_crashlytics, R.drawable.baseline_bug_report_24, R.string.AllowCrashlytics));
         items.add(new ListItem(ListItem.TYPE_SHADOW_BOTTOM));
+        items.add(new ListItem(ListItem.TYPE_DESCRIPTION, 0, 0, R.string.CrashlyticsNote, false));
         break;
       default:
         items.add(new ListItem(ListItem.TYPE_HEADER, 0, 0, R.string.MoexAbout));
