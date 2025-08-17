@@ -50,6 +50,8 @@ public class MoexConfig {
   public static final String KEY_DARKEN_DRAWER = "darken_drawer";
   public static final String KEY_SILENT_MESSAGE = "silent_message";
   public static final String KEY_ENABLE_CRASHLYTICS = "enable_crashlytics";
+  public static final String KEY_CHAT_QUICK_EDIT = "quick_edit";
+  public static final String KEY_CHAT_QUICK_FEATURED = "quick_featured";
 
   public static final int SIZE_LIMIT_800 = 0;
   public static final int SIZE_LIMIT_1280 = 1;
@@ -79,6 +81,8 @@ public class MoexConfig {
   public static boolean darkenDrawer = instance().getBoolean(KEY_DARKEN_DRAWER, false);
   public static boolean silentMessage = instance().getBoolean(KEY_SILENT_MESSAGE, false);
   public static boolean enableCrashlytics = instance().getBoolean(KEY_ENABLE_CRASHLYTICS, true);
+  public static boolean quickEdit = instance().getBoolean(KEY_CHAT_QUICK_EDIT, false);
+  public static boolean quickFeatured = instance().getBoolean(KEY_CHAT_QUICK_FEATURED, false);
 
   private MoexConfig () {
     File configDir = new File(UI.getAppContext().getFilesDir(), "moexconf");
@@ -351,5 +355,13 @@ public class MoexConfig {
 
   public void toggleCrashlytics () {
     putBoolean(KEY_ENABLE_CRASHLYTICS, enableCrashlytics ^= true);
+  }
+
+  public void toggleQuickEdit () {
+    putBoolean(KEY_CHAT_QUICK_EDIT, quickEdit ^= true);
+  }
+
+  public void toggleQuickFeatured () {
+    putBoolean(KEY_CHAT_QUICK_FEATURED, quickFeatured ^= true);
   }
 }
